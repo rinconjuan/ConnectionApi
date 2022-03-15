@@ -11,5 +11,7 @@ namespace ConnectionApi.Context
         }
 
         public DbSet<Imagenes> Imagenes { get; set; }
+        public DbSet<Acciones> Acciones { get; set; }
+
     }
 }

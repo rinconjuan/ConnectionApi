@@ -38,6 +38,35 @@ namespace ConnectionApi.Controllers
             }      
 
         }
+        [HttpGet, Route("Acciones")]
+        public IActionResult GetAccion()
+        {
+            try
+            {
+                CircutorBL circutorBL = new CircutorBL(_env, _appContext);
+                var respuesta = circutorBL.GetAccion();
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
+
+        [HttpPost, Route("Accion")]
+        public IActionResult PostAccion(string key)
+        {
+            try
+            {
+                CircutorBL circutorBL = new CircutorBL(_env, _appContext);
+                var respuesta = circutorBL.AccionKey(key);
+                return new ObjectResult(respuesta);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
 
         [HttpGet("DescargarImagen/{id:int}")]
         public IActionResult DownloadFile(int id)
