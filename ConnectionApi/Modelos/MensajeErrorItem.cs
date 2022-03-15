@@ -12,7 +12,7 @@ namespace ConnectionApi.Modelos
         /// </summary>
         /// <param name="codigoError">código del error.</param>
         /// <param name="mensajeError">Mensaje Error.</param>
-        public MensajeErrorItem(string codigoError = default(string), string mensajeError = default(string))
+        public MensajeErrorItem(string? codigoError = default(string), string? mensajeError = default(string))
         {
             this.CodigoError = codigoError;
             this.MensajeError = mensajeError;
@@ -23,14 +23,14 @@ namespace ConnectionApi.Modelos
         /// </summary>
         /// <value>código del error</value>
         [DataMember(Name = "codigoError", EmitDefaultValue = false)]
-        public string CodigoError { get; set; }
+        public string? CodigoError { get; set; }
 
         /// <summary>
         /// Mensaje Error
         /// </summary>
         /// <value>Mensaje Error</value>
         [DataMember(Name = "mensajeError", EmitDefaultValue = false)]
-        public string MensajeError { get; set; }
+        public string? MensajeError { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -55,15 +55,7 @@ namespace ConnectionApi.Modelos
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
-        /// <summary>
-        /// Returns true if objects are equal
-        /// </summary>
-        /// <param name="input">Object to be compared</param>
-        /// <returns>Boolean</returns>
-        public override bool Equals(object input)
-        {
-            return this.Equals(input as MensajeErrorItem);
-        }
+        
 
         /// <summary>
         /// Returns true if MensajeErrorItem instances are equal
