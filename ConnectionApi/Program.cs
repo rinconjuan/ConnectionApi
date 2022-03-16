@@ -12,6 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionApiContext")));
+builder.Services.AddDbContext<WebContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConecctionWebApiContext")));
 
 var app = builder.Build();
 

@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "apis1": {
-      "apiEndpoint": "https://connectionapiv2.azure-api.net/",
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/ConnectionApiV2/apis/ConnectionApi",
       "type": "apis.azure"
     }
