@@ -34,5 +34,19 @@ namespace ConnectionApi.Controllers
                 return BadRequest(AdministrarExcepcion(ex));
             }
         }
+        [HttpGet, Route("GetAutenticacion")]
+        public IActionResult GetAutenticacion(DatosLogin data)
+        {
+            try
+            {
+                WebAppBL webAppBL = new WebAppBL(_env, _appContext);
+                RespuestaLogin respuesta = webAppBL.GetAutenticacion(data);
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
     }
 }

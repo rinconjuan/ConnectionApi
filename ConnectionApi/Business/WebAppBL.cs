@@ -37,5 +37,21 @@ namespace ConnectionApi.Business
             return respuesta;
         }
 
+        internal RespuestaLogin GetAutenticacion(DatosLogin data)
+        {
+            RespuestaLogin respuesta = new RespuestaLogin();
+            var userFind = _appContext.Usuarios.Where(x => x.Email == data.email && x.Contrasenia == data.password).FirstOrDefault();
+            if (userFind == null)
+            {
+                respuesta.idUser = 0;
+                respuesta.statusLogin = false;
+            }
+            else
+            {   respuesta.idUser = userFind.idUser;
+                respuesta.statusLogin = true;
+            }               
+            
+            return respuesta;
+        }
     }
 }
