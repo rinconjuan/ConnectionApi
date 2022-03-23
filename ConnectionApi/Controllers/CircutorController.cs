@@ -68,16 +68,17 @@ namespace ConnectionApi.Controllers
             }
         }
 
-        [HttpGet("DescargarImagen/{id:int}")]
-        public IActionResult DownloadFile(int id)
+        [HttpGet("DescargarImagen")]
+        public IActionResult DownloadFile()
         {
             try
             {
-                var imagenDownload = _appContext.Imagenes.Where(x => x.idImagen == id).FirstOrDefault();
+                var imagenDownload = _appContext.Imagenes.Where(x => x.idImagen == 93).FirstOrDefault();
                 if (imagenDownload == null)
                     throw new ExcepcionMessage("CCTDLF01", "No se encontro imagen con ese ID");
-                var dataImagen = Convert.FromBase64String(imagenDownload.DataImagen);
-                return File(dataImagen, imagenDownload.MimeType, imagenDownload.NameImagen);
+                //var dataImagen = Convert.FromBase64String(imagenDownload.DataImagen);
+                //return File(dataImagen, imagenDownload.MimeType, imagenDownload.NameImagen);
+                return new ObjectResult(imagenDownload);
             }
             catch(Exception ex)
             {

@@ -12,12 +12,8 @@ namespace ConnectionApi.Modelos
 {
     public class RespuestaUsuarios
     {
-        [Key]
-        public int idUser { get; set; }
-        public string? Nombres { get; set; }
-        public string? Apellidos { get; set; }
-        public string? Email { get; set; }
-        public string? Contrasenia { get; set; }
+        public bool EstadoLogin { get; set; }
+        public Usuarios? Usuario { get; set; }
 
     }
 }

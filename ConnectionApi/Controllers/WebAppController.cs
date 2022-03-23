@@ -21,12 +21,12 @@ namespace ConnectionApi.Controllers
         }
 
         [HttpGet, Route("GetUsuario")]
-        public IActionResult GetUsuario(string email, string contrasenia)
+        public IActionResult GetUsuario(DatosLogin datosLogin)
         {
             try
             {
                 WebAppBL webAppBL = new WebAppBL(_env, _appContext);
-                var respuesta = webAppBL.GetUsuario(email, contrasenia);
+                var respuesta = webAppBL.GetUsuario(datosLogin);
                 return new ObjectResult(respuesta);
             }
             catch (Exception ex)
@@ -34,19 +34,6 @@ namespace ConnectionApi.Controllers
                 return BadRequest(AdministrarExcepcion(ex));
             }
         }
-        [HttpGet, Route("GetAutenticacion")]
-        public IActionResult GetAutenticacion(DatosLogin data)
-        {
-            try
-            {
-                WebAppBL webAppBL = new WebAppBL(_env, _appContext);
-                RespuestaLogin respuesta = webAppBL.GetAutenticacion(data);
-                return new ObjectResult(respuesta);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(AdministrarExcepcion(ex));
-            }
-        }
+        
     }
 }

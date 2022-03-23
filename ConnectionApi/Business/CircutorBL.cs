@@ -124,6 +124,7 @@ namespace ConnectionApi.Business
             {
                 var accionUpdate = _appContext.Acciones.FirstOrDefault();
                 accionUpdate.Accion = accion.Accion;
+                accionUpdate.CodigoKey = accion.CodigoKey;
                 _appContext.SaveChanges();
             }
 

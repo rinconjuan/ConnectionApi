@@ -22,36 +22,22 @@ namespace ConnectionApi.Business
         }
 
         
-        public RespuestaUsuarios GetUsuario(string email, string password)
+        public RespuestaUsuarios GetUsuario(DatosLogin data)
         {
 
             RespuestaUsuarios respuesta = new RespuestaUsuarios();
-            var userFind = _appContext.Usuarios.Where(x => x.Email == email && x.Contrasenia == password).FirstOrDefault();
-            if(userFind == null)
-                throw new ExcepcionMessage("WAPGUS01", "No existe el usuario");
-            respuesta.idUser = userFind.idUser;
-            respuesta.Nombres = userFind.Nombres;
-            respuesta.Apellidos = userFind.Apellidos;
-            respuesta.Email = userFind.Email;
-            respuesta.Contrasenia = userFind.Contrasenia;
-            return respuesta;
-        }
-
-        internal RespuestaLogin GetAutenticacion(DatosLogin data)
-        {
-            RespuestaLogin respuesta = new RespuestaLogin();
             var userFind = _appContext.Usuarios.Where(x => x.Email == data.email && x.Contrasenia == data.password).FirstOrDefault();
-            if (userFind == null)
+            if(userFind == null)
             {
-                respuesta.idUser = 0;
-                respuesta.statusLogin = false;
+                respuesta.EstadoLogin = false;
             }
             else
-            {   respuesta.idUser = userFind.idUser;
-                respuesta.statusLogin = true;
-            }               
-            
+            {
+                respuesta.Usuario = userFind;
+                respuesta.EstadoLogin = true;
+            }                           
             return respuesta;
         }
+        
     }
 }
