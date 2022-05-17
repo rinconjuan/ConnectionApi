@@ -12,6 +12,10 @@ namespace ConnectionApi.Context
 
         public DbSet<Imagenes> Imagenes { get; set; }
         public DbSet<Acciones> Acciones { get; set; }
+        public DbSet<AccionesVariador> AccionesVariador { get; set; }
+        public DbSet<VelocidadVariador> VelocidadVariador { get; set; }
+
+
 
     }
 }

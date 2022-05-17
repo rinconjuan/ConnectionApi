@@ -11,8 +11,6 @@ using ConnectionApi.Business;
 namespace ConnectionApi.Controllers
 {
     
-
-    
     public class CircutorController : AdministrarException
     {
         private readonly IWebHostEnvironment _env;
