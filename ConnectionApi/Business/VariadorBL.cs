@@ -75,5 +75,42 @@ namespace ConnectionApi.Business
 
             return respuesta;
         }
+
+        internal object GetVelocidad()
+        {
+          RespuestaVelocidad respuestaVelocidad = new RespuestaVelocidad();
+            var accionActual = _appContext.VelocidadVariador.FirstOrDefault();
+            ushort velocidad = new ushort();
+            if (accionActual != null)
+            {
+                 velocidad = Convert.ToUInt16(accionActual.Speed);
+
+            }
+            respuestaVelocidad.velocidad = velocidad;
+
+            return respuestaVelocidad;
+        }
+
+        internal object UpdateVelocidad(string velocidad)
+        {
+            RespuestaUpFuncion respuesta = new RespuestaUpFuncion();
+            VelocidadVariador velocidadup = new VelocidadVariador();
+            velocidadup.Speed = velocidad;
+
+            var fileDb = _appContext.VelocidadVariador.Count();
+            if (fileDb == 0)
+            {
+                var nuevaAccion = _appContext.VelocidadVariador.Add(velocidadup);
+                _appContext.SaveChanges();
+            }
+            else
+            {
+                var accionUpdate = _appContext.VelocidadVariador.FirstOrDefault();
+                accionUpdate.Speed = velocidadup.Speed;
+                _appContext.SaveChanges();
+            }
+
+            return respuesta;
+        }
     }
 }

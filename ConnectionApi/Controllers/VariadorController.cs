@@ -49,5 +49,37 @@ namespace ConnectionApi.Controllers
                 return BadRequest(AdministrarExcepcion(ex));
             }
         }
+
+        [HttpPost, Route("UpdateVelocidad")]
+        public IActionResult UpdateVelocidad(string  velocidad)
+        {
+            try
+            {
+                VariadorBL variadorBL = new VariadorBL(_env, _appContext);
+                var respuesta = variadorBL.UpdateVelocidad(velocidad);
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
+
+        [HttpGet, Route("GetVelocidad")]
+        public IActionResult GetVelocidad()
+        {
+            try
+            {
+                VariadorBL variadorBL = new VariadorBL(_env, _appContext);
+                var respuesta = variadorBL.GetVelocidad();
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+                {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
     }
 }
+
+

@@ -5,7 +5,7 @@ namespace ConnectionApi.Modelos
     {
         [Key]
         public int idSpeed { get; set; }
-        public int Speed { get; set; }
+        public string Speed { get; set; }
 
     }
 }
