@@ -10,12 +10,12 @@ using ConnectionApi.Business;
 
 namespace ConnectionApi.Controllers
 {
-    public class SourceController : Controller
+    public class SourceController : AdministrarException
     {
 
         private readonly IWebHostEnvironment _env;
-        private readonly WebContext _appContext;
-        public SourceController(IWebHostEnvironment env, WebContext appContext)
+        private readonly AppContext _appContext;
+        public SourceController(IWebHostEnvironment env, AppContext appContext)
         {
             _env = env;
             _appContext = appContext;
