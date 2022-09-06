@@ -14,6 +14,10 @@ namespace ConnectionApi.Context
         public DbSet<Acciones> Acciones { get; set; }
         public DbSet<AccionesVariador> AccionesVariador { get; set; }
         public DbSet<VelocidadVariador> VelocidadVariador { get; set; }
+        public DbSet<Fuente> Fuente { get; set; }
+        public DbSet<Registro> Registro { get; set; }
+
+
 
 
 
