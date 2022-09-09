@@ -17,7 +17,7 @@ namespace ConnectionApi.Context
         public DbSet<Fuente> Fuente { get; set; }
         public DbSet<Registro> Registro { get; set; }
 
-
+        public DbSet<Usuarios> Usuarios { get; set; }
 
 
 

@@ -14,8 +14,8 @@ namespace ConnectionApi.Business
     {
 
         private readonly IWebHostEnvironment _env;
-        private readonly WebContext _appContext;
-        public WebAppBL(IWebHostEnvironment env, WebContext appContext)
+        private readonly AppContext _appContext;
+        public WebAppBL(IWebHostEnvironment env, AppContext appContext)
         {
             _env = env;
             _appContext = appContext;

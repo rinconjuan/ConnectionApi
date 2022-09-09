@@ -13,8 +13,8 @@ namespace ConnectionApi.Controllers
     {       
 
         private readonly IWebHostEnvironment _env;
-        private readonly WebContext _appContext;
-        public WebAppController(IWebHostEnvironment env, WebContext appContext)
+        private readonly AppContext _appContext;
+        public WebAppController(IWebHostEnvironment env, AppContext appContext)
         {
             _env = env;
             _appContext = appContext;
