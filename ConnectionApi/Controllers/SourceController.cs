@@ -35,7 +35,6 @@ namespace ConnectionApi.Controllers
                 return BadRequest(AdministrarExcepcion(ex));
             }
         }
-
         
     }
 }
