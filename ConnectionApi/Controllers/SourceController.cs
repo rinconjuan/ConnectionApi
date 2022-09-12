@@ -35,6 +35,21 @@ namespace ConnectionApi.Controllers
                 return BadRequest(AdministrarExcepcion(ex));
             }
         }
-        
+        [HttpGet, Route("GetAccionSource")]
+        public IActionResult GetAccionSource( )
+        {
+            try
+            {
+                SourceBL ManagementSource = new SourceBL(_env, _appContext);
+                var respuesta = ManagementSource.GetAccionSource();
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+        }
+
+
     }
 }
