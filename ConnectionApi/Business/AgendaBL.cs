@@ -66,7 +66,7 @@ namespace ConnectionApi.Business
             switch (agenda.Modo)
             {
                 case "INS":
-                    var agendaDBIns = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin && x.FechaInicio == agenda.FechaInicio).FirstOrDefault();
+                    var agendaDBIns = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio).FirstOrDefault();
                     if(agendaDBIns != null)
                         throw new ExcepcionMessage("ULAGE01", "No se puede agendar para estar hora, el espacio no esta disponible, busque otro horario");
                     respuesta.Disponibilidad = true;
@@ -75,7 +75,7 @@ namespace ConnectionApi.Business
                     respuesta.Agendas.Add(agendaDBIns);
                     break;
                 case "LOG":
-                    var agendaDBLog = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin && x.FechaInicio == agenda.FechaInicio && x.IdUser == agenda.IdUser).FirstOrDefault();
+                    var agendaDBLog = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio & x.IdUser == agenda.IdUser).FirstOrDefault();
                     if (agendaDBLog == null)
                         throw new ExcepcionMessage("ULAGE02", "No puede ingresar en este momento, no esta agendado para esta hora");
                     respuesta.Disponibilidad = true;
