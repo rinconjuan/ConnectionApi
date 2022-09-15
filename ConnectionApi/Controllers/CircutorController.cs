@@ -84,5 +84,39 @@ namespace ConnectionApi.Controllers
             }
             
         }
+
+          [HttpPost, Route("CargarRegistro")]
+        public IActionResult CargarRegistro(IFormFile fileup, int IdUser)
+        {
+            try
+            {
+                CircutorBL circutorBL = new CircutorBL(_env, _appContext);
+                var respuesta = circutorBL.CargarRegistro(fileup, IdUser);
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {               
+                return BadRequest(AdministrarExcepcion(ex));
+            }      
+
+        }
+
+        [HttpGet("DescargarRegistro")]
+        public IActionResult DownloadRegistro(int IdUser)
+        {
+            try
+            {
+                var imagenDownload = _appContext.Registro.Where(x => x.idUser == IdUser).FirstOrDefault();
+                if (imagenDownload == null)
+                    throw new ExcepcionMessage("CCTDLF01", "No se encontro imagen con ese ID");
+               
+                return new ObjectResult(imagenDownload);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(AdministrarExcepcion(ex));
+            }
+
+        }
     }
 }

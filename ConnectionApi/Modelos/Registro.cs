@@ -13,6 +13,9 @@ namespace ConnectionApi.Modelos
         public string Imagen { get;set;}    
 
         public int idUser { get;set;}
+        public string NameImagen { get; set; }
+
+        public string MimeType { get; set; }
 
     }
 }

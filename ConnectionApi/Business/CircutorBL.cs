@@ -131,5 +131,44 @@ namespace ConnectionApi.Business
 
             return respuesta;
         }
+
+        internal object CargarRegistro(IFormFile fileup, int IdUser)
+        {
+            var respuesta = new RespuestaCargueArchivo();
+
+            if (fileup == null)
+                throw new ExcepcionMessage("CCTUPF01", "No hay imagen para cargar");
+
+            var nuevaImagen = new Registro();
+            using (var ms = new MemoryStream())
+            {
+                fileup.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                string s = Convert.ToBase64String(fileBytes);
+                nuevaImagen.Imagen = s;
+                nuevaImagen.NameImagen = fileup.FileName;
+                nuevaImagen.MimeType = "image/bmp";
+                nuevaImagen.Fecha = DateTime.Now;
+                nuevaImagen.idUser = IdUser;
+                nuevaImagen.NombrePrueba = "BloqRotor";
+                var fileDb = _appContext.Registro.Count();
+                if (fileDb == 0)
+                {
+                    var imagenes = _appContext.Registro.Add(nuevaImagen);
+                    _appContext.SaveChanges();
+                }
+                else
+                {
+                    var imgUpdate = _appContext.Registro.FirstOrDefault();
+                    imgUpdate.Imagen = nuevaImagen.Imagen;
+                    _appContext.SaveChanges();
+                }
+
+                respuesta.EstadoArchivo = "Ok";
+                respuesta.NombreArchivo = fileup.FileName;
+
+                return respuesta;
+            }
+        }
     }
 }
