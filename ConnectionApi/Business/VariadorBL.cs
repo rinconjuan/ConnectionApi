@@ -96,19 +96,31 @@ namespace ConnectionApi.Business
             RespuestaUpFuncion respuesta = new RespuestaUpFuncion();
             VelocidadVariador velocidadup = new VelocidadVariador();
             velocidadup.Speed = velocidad;
-
+            velocidadup.idSpeed = 1;
             var fileDb = _appContext.VelocidadVariador.Count();
-            if (fileDb == 0)
+            try
             {
-                var nuevaAccion = _appContext.VelocidadVariador.Add(velocidadup);
-                _appContext.SaveChanges();
+                if (fileDb == 0)
+                {
+                    var nuevaAccion = _appContext.VelocidadVariador.Add(velocidadup);
+                    _appContext.SaveChanges();                    
+                }
+                else
+                {
+                    var accionUpdate = _appContext.VelocidadVariador.FirstOrDefault();
+                    accionUpdate.Speed = velocidadup.Speed;
+                    _appContext.SaveChanges();
+                }
+
+                respuesta.Accion = "Update Velocidad";
+                respuesta.Estado = true;
             }
-            else
+            catch(Exception ex)
             {
-                var accionUpdate = _appContext.VelocidadVariador.FirstOrDefault();
-                accionUpdate.Speed = velocidadup.Speed;
-                _appContext.SaveChanges();
+                throw new ExcepcionMessage("UPDVEL01", "Velocidad no actualizada");
+
             }
+
 
             return respuesta;
         }
