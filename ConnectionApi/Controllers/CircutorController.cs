@@ -71,7 +71,7 @@ namespace ConnectionApi.Controllers
         {
             try
             {
-                var imagenDownload = _appContext.Imagenes.Where(x => x.idImagen == 93).FirstOrDefault();
+                var imagenDownload = _appContext.Imagenes.FirstOrDefault();
                 if (imagenDownload == null)
                     throw new ExcepcionMessage("CCTDLF01", "No se encontro imagen con ese ID");
                 //var dataImagen = Convert.FromBase64String(imagenDownload.DataImagen);
