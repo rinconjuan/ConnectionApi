@@ -100,7 +100,7 @@ namespace ConnectionApi.Controllers
         {
             try
             {
-                var imagenDownload = _appContext.Imagenes.Where(x => x.idImagen == 93).FirstOrDefault();
+                var imagenDownload = _appContext.Imagenes.FirstOrDefault();
                 if (imagenDownload == null)
                     throw new Exception("No se encontro imagen con ese ID");                
                 return new ObjectResult(imagenDownload);

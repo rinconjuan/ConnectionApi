@@ -32,6 +32,7 @@ namespace ConnectionApi.Business
                 fileup.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 string s = Convert.ToBase64String(fileBytes);
+                nuevaImagen.idImagen = 1;
                 nuevaImagen.DataImagen = s;
                 nuevaImagen.NameImagen = fileup.FileName;
                 nuevaImagen.MimeType = "image/bmp";
