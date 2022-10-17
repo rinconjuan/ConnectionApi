@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
@@ -54,7 +54,7 @@ namespace ConnectionApi.Business
                 string respuesta = "";
                 Fuente fuente = new Fuente();
                 if (string.IsNullOrEmpty(accion))
-                    throw new ExcepcionMessage("SSMMS01", "Accion no puede ser nula");
+                    throw new Exception("Accion no puede ser nula");
 
                 switch (accion)
                 {
@@ -68,7 +68,7 @@ namespace ConnectionApi.Business
                         fuente.Accion = 0;
                         break;
                     default:
-                        throw new ExcepcionMessage("SSMMS02", "Accion no valida");
+                        throw new Exception("Accion no valida");
 
                 }
                

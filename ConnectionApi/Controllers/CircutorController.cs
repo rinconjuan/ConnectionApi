@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
@@ -11,7 +10,7 @@ using ConnectionApi.Business;
 namespace ConnectionApi.Controllers
 {
     
-    public class CircutorController : AdministrarException
+    public class CircutorController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
         private readonly AppContext _appContext;
@@ -31,8 +30,18 @@ namespace ConnectionApi.Controllers
                 return new ObjectResult(respuesta);
             }
             catch (Exception ex)
-            {               
-                return BadRequest(AdministrarExcepcion(ex));
+            {
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }      
 
         }
@@ -47,7 +56,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -62,7 +81,17 @@ namespace ConnectionApi.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -73,14 +102,22 @@ namespace ConnectionApi.Controllers
             {
                 var imagenDownload = _appContext.Imagenes.Where(x => x.idImagen == 93).FirstOrDefault();
                 if (imagenDownload == null)
-                    throw new ExcepcionMessage("CCTDLF01", "No se encontro imagen con ese ID");
-                //var dataImagen = Convert.FromBase64String(imagenDownload.DataImagen);
-                //return File(dataImagen, imagenDownload.MimeType, imagenDownload.NameImagen);
+                    throw new Exception("No se encontro imagen con ese ID");                
                 return new ObjectResult(imagenDownload);
             }
             catch(Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
             
         }
@@ -95,8 +132,18 @@ namespace ConnectionApi.Controllers
                 return new ObjectResult(respuesta);
             }
             catch (Exception ex)
-            {               
-                return BadRequest(AdministrarExcepcion(ex));
+            {
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }      
 
         }
@@ -108,13 +155,22 @@ namespace ConnectionApi.Controllers
             {
                 var imagenDownload = _appContext.Registro.Where(x => x.idUser == IdUser).FirstOrDefault();
                 if (imagenDownload == null)
-                    throw new ExcepcionMessage("CCTDLF01", "No se encontro imagen con ese ID");
-               
+                    throw new Exception("No se encontro imagen con ese ID");               
                 return new ObjectResult(imagenDownload);
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
 
         }

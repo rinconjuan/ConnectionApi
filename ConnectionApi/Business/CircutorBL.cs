@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
@@ -25,7 +24,7 @@ namespace ConnectionApi.Business
             var respuesta = new RespuestaCargueArchivo();                      
 
             if (fileup == null)
-                throw new ExcepcionMessage("CCTUPF01", "No hay imagen para cargar");
+                throw new Exception("No hay imagen para cargar");
             
             var nuevaImagen = new Imagenes();
             using (var ms = new MemoryStream())
@@ -63,7 +62,7 @@ namespace ConnectionApi.Business
             RespuestaAccion respuesta = new RespuestaAccion();
             var countAcciones = _appContext.Acciones.Count();
             if(countAcciones == 0 )
-                throw new ExcepcionMessage("CCTGAC01", "No hay acciones");
+                throw new Exception("No hay acciones");
 
             var accionDb = _appContext.Acciones.FirstOrDefault();
             respuesta.Accion = accionDb.Accion;
@@ -80,7 +79,7 @@ namespace ConnectionApi.Business
             RespuestaAccion respuesta = new RespuestaAccion();
             Acciones accion = new Acciones();
             if(string.IsNullOrEmpty(key))
-                throw new ExcepcionMessage("CCTAKE01", "Accion no puede ser nula");
+                throw new Exception("Accion no puede ser nula");
 
             switch (key)
             {
@@ -109,7 +108,7 @@ namespace ConnectionApi.Business
                     respuesta.CodigoKey = key;
                     break;
                 default:
-                    throw new ExcepcionMessage("CCTAKE02", "Accion no valida");
+                    throw new Exception("Accion no valida");
 
             }
             accion.Accion = respuesta.Accion;
@@ -137,7 +136,7 @@ namespace ConnectionApi.Business
             var respuesta = new RespuestaCargueArchivo();
 
             if (fileup == null)
-                throw new ExcepcionMessage("CCTUPF01", "No hay imagen para cargar");
+                throw new Exception("No hay imagen para cargar");
 
             var nuevaImagen = new Registro();
             using (var ms = new MemoryStream())

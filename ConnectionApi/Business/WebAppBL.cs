@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;

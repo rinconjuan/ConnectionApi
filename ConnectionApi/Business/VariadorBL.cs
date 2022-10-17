@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
@@ -117,7 +116,7 @@ namespace ConnectionApi.Business
             }
             catch(Exception ex)
             {
-                throw new ExcepcionMessage("UPDVEL01", "Velocidad no actualizada");
+                throw new Exception("Velocidad no actualizada");
 
             }
 

@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
 using ConnectionApi.Business;
 namespace ConnectionApi.Controllers
 {
-    public class WebAppController : AdministrarException
+    public class WebAppController : ControllerBase
     {       
 
         private readonly IWebHostEnvironment _env;
@@ -31,7 +30,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
         

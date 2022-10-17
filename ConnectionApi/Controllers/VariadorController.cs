@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
@@ -10,7 +9,7 @@ using ConnectionApi.Business;
 
 namespace ConnectionApi.Controllers
 {
-    public class VariadorController : AdministrarException
+    public class VariadorController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
         private readonly AppContext _appContext;
@@ -31,7 +30,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -46,7 +55,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -61,7 +80,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -76,7 +105,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
                 {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
     }

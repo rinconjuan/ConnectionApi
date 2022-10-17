@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
 using ConnectionApi.Business;
+using System;
 
 namespace ConnectionApi.Business
 {
@@ -23,7 +23,7 @@ namespace ConnectionApi.Business
         internal object CreateAgenda(Agenda agenda)
         {
             if(agenda.FechaFin < agenda.FechaInicio)
-                throw new ExcepcionMessage("ULCAGE01", "La fecha fin no puede ser menor a la fecha inicio");
+                throw new Exception("La fecha fin no puede ser menor a la fecha inicio");
 
 
             RespuestaCrearAgenda respuesta = new RespuestaCrearAgenda();
@@ -35,8 +35,8 @@ namespace ConnectionApi.Business
                 Modo = "INS"
             };
 
-            try
-            {
+            //try
+            //{
                 RespuestaAgenda getAgenda = GetAgenda(consultaAgenda);
                 if (getAgenda.Disponibilidad)
                 {
@@ -46,13 +46,14 @@ namespace ConnectionApi.Business
                     respuesta.idUser = agenda.IdUser;
                     respuesta.Mensaje = "Agendamiento creado con exito.";
                 }
-            }
-            catch(ExcepcionMessage ex)
-            {
-                respuesta.Creado = false;
-                respuesta.idUser = agenda.IdUser;
-                respuesta.Mensaje = ex.Descripcion;
-            }
+            //}
+            //catch(Exception ex)
+            //{
+            //    //respuesta.Creado = false;
+            //    //respuesta.idUser = agenda.IdUser;
+            //    //respuesta.Mensaje = ex.Message;
+                
+            //}
                    
             return respuesta;
             
@@ -68,7 +69,7 @@ namespace ConnectionApi.Business
                 case "INS":
                     var agendaDBIns = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio).FirstOrDefault();
                     if(agendaDBIns != null)
-                        throw new ExcepcionMessage("ULAGE01", "No se puede agendar para estar hora, el espacio no esta disponible, busque otro horario");
+                        throw new MensajeError("No se puede agendar para estar hora, el espacio no esta disponible, busque otro horario");
                     respuesta.Disponibilidad = true;
                     respuesta.Acceso = true;
                     respuesta.IdUser = agenda.IdUser;
@@ -77,7 +78,7 @@ namespace ConnectionApi.Business
                 case "LOG":
                     var agendaDBLog = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio & x.IdUser == agenda.IdUser).FirstOrDefault();
                     if (agendaDBLog == null)
-                        throw new ExcepcionMessage("ULAGE02", "No puede ingresar en este momento, no esta agendado para esta hora");
+                        throw new MensajeError("No puede ingresar en este momento, no esta agendado para esta hora");
                     respuesta.Disponibilidad = true;
                     respuesta.Acceso = true;
                     respuesta.IdUser = agenda.IdUser;
@@ -86,7 +87,7 @@ namespace ConnectionApi.Business
                 case "CON":
                     var agendaDBCon = _appContext.Agenda.ToList();
                     if(agendaDBCon == null)
-                        throw new ExcepcionMessage("ULAGE03", "No hay agendas");
+                        throw new Exception("No hay agendas");
                     foreach(var item in agendaDBCon)
                     {
                         respuesta.Agendas.Add(item);

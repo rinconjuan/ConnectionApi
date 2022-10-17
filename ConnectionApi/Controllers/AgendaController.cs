@@ -2,14 +2,16 @@
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
-using ConnectionApi.Utils;
 using ConnectionApi.Modelos;
 using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
 using ConnectionApi.Business;
+using System.Web;
+using System.Net;
+
 namespace ConnectionApi.Controllers
 {
-    public class AgendaController : AdministrarException
+    public class AgendaController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
         private readonly AppContext _appContext;
@@ -30,7 +32,17 @@ namespace ConnectionApi.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if(ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
 
@@ -40,14 +52,24 @@ namespace ConnectionApi.Controllers
         public IActionResult GetAgenda(DatosAgenda agenda)
         {
             try
-            {
+            {               
                 AgendaBL Agenda = new AgendaBL(_env, _appContext);
                 var respuesta = Agenda.GetAgenda(agenda);
                 return new ObjectResult(respuesta);
             }
             catch (Exception ex)
             {
-                return BadRequest(AdministrarExcepcion(ex));
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
             }
         }
     }
