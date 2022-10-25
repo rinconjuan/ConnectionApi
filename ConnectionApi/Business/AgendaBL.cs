@@ -7,6 +7,7 @@ using ConnectionApi.Context;
 using AppContext = ConnectionApi.Context.AppContext;
 using ConnectionApi.Business;
 using System;
+using System.Web.Http;
 
 namespace ConnectionApi.Business
 {
@@ -37,15 +38,13 @@ namespace ConnectionApi.Business
 
             //try
             //{
-                RespuestaAgenda getAgenda = GetAgenda(consultaAgenda);
-                if (getAgenda.Disponibilidad)
-                {
+                
                     var nuevoBooking = _appContext.Agenda.Add(agenda);
                     _appContext.SaveChanges();
                     respuesta.Creado = true;
                     respuesta.idUser = agenda.IdUser;
                     respuesta.Mensaje = "Agendamiento creado con exito.";
-                }
+                
             //}
             //catch(Exception ex)
             //{
@@ -59,7 +58,7 @@ namespace ConnectionApi.Business
             
         }
 
-        internal RespuestaAgenda GetAgenda(DatosAgenda agenda)
+        internal RespuestaAgenda GetAgenda([FromUri] DatosAgenda agenda)
         {
 
             RespuestaAgenda respuesta = new RespuestaAgenda();
@@ -67,13 +66,20 @@ namespace ConnectionApi.Business
             switch (agenda.Modo)
             {
                 case "INS":
-                    var agendaDBIns = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio).FirstOrDefault();
+                    var agendaDBIns = _appContext.Agenda.Where(x => x.FechaInicio < agenda.FechaFin & x.FechaFin > agenda.FechaInicio).FirstOrDefault();
                     if(agendaDBIns != null)
                         throw new MensajeError("No se puede agendar para estar hora, el espacio no esta disponible, busque otro horario");
                     respuesta.Disponibilidad = true;
                     respuesta.Acceso = true;
                     respuesta.IdUser = agenda.IdUser;
-                    respuesta.Agendas.Add(agendaDBIns);
+
+                    Agenda nuevaAgenda = new Agenda();
+                    nuevaAgenda.Estado = "PROG";
+                    nuevaAgenda.FechaFin = (DateTime)agenda.FechaFin;
+                    nuevaAgenda.FechaInicio = (DateTime)agenda.FechaInicio;
+                    nuevaAgenda.IdUser = agenda.IdUser;
+                    CreateAgenda(nuevaAgenda);
+
                     break;
                 case "LOG":
                     var agendaDBLog = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio & x.IdUser == agenda.IdUser).FirstOrDefault();
@@ -86,7 +92,7 @@ namespace ConnectionApi.Business
                     break;
                 case "CON":
                     var agendaDBCon = _appContext.Agenda.ToList();
-                    if(agendaDBCon == null)
+                    if(agendaDBCon.Count == 0)
                         throw new Exception("No hay agendas");
                     foreach(var item in agendaDBCon)
                     {

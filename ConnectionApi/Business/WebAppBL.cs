@@ -24,9 +24,10 @@ namespace ConnectionApi.Business
         public RespuestaUsuarios GetUsuario(DatosLogin data)
         {
 
-            RespuestaUsuarios respuesta = new RespuestaUsuarios();
+            RespuestaUsuarios respuesta = new RespuestaUsuarios();            
+                
             var userFind = _appContext.Usuarios.Where(x => x.Email == data.email && x.Contrasenia == data.password).FirstOrDefault();
-            if(userFind == null)
+            if (userFind == null)
             {
                 respuesta.EstadoLogin = false;
             }
@@ -34,9 +35,22 @@ namespace ConnectionApi.Business
             {
                 respuesta.Usuario = userFind;
                 respuesta.EstadoLogin = true;
-            }                           
+            }          
+
+                                       
             return respuesta;
         }
-        
+
+        internal object GetDatos(string email)
+        {
+            Usuarios respuesta = new Usuarios();
+            var userFind = _appContext.Usuarios.Where(x => x.Email == email).FirstOrDefault();
+            if (userFind == null)
+                return respuesta;
+
+            respuesta = userFind;
+            return respuesta;
+
+        }
     }
 }

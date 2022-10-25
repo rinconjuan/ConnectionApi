@@ -8,7 +8,7 @@ namespace ConnectionApi.Modelos
         public DateTime FechaInicio { get; set; }
 
         public DateTime FechaFin { get; set; }
-        public string Etado { get; set; }
+        public string Estado { get; set; }
         public int IdUser { get; set; }
 
     }

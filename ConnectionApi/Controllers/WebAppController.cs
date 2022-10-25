@@ -43,6 +43,31 @@ namespace ConnectionApi.Controllers
                 return BadRequest(mensajeError.Mensaje);
             }
         }
-        
+
+
+        [HttpGet, Route("GetDatos")]
+        public IActionResult GetDatos(string email)
+        {
+            try
+            {
+                WebAppBL webAppBL = new WebAppBL(_env, _appContext);
+                var respuesta = webAppBL.GetDatos(email);
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
+            }
+        }
     }
 }

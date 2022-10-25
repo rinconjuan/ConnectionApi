@@ -21,12 +21,12 @@ namespace ConnectionApi.Controllers
         }           
         
         [HttpPost, Route("CargarImagen")]
-        public IActionResult UploadFile(IFormFile fileup)
+        public IActionResult UploadFile(IFormFile fileup, string modo)
         {
             try
             {
                 CircutorBL circutorBL = new CircutorBL(_env, _appContext);
-                var respuesta = circutorBL.UploadImagen(fileup);
+                var respuesta = circutorBL.UploadImagen(fileup, modo);
                 return new ObjectResult(respuesta);
             }
             catch (Exception ex)
@@ -45,6 +45,51 @@ namespace ConnectionApi.Controllers
             }      
 
         }
+
+        [HttpGet("DescargarImagen")]
+        public IActionResult DownloadFile(string Modo)
+        {
+            try
+            {
+                switch (Modo)
+                {
+                    case "NOM":
+                        var imagenDownload = _appContext.Imagenes.FirstOrDefault();
+                        if (imagenDownload == null)
+                            throw new Exception("No se encontro imagen con ese ID");
+                        return new ObjectResult(imagenDownload);
+                        break;
+                    case "BLQ":
+                        var registroDownload = _appContext.Registro.FirstOrDefault();
+                        if (registroDownload == null)
+                            throw new Exception("No hay imagen");
+                        return new ObjectResult(registroDownload);
+                        break;
+                    default:
+                        throw new Exception("Modo no permitido");
+                        break;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
+            }
+
+        }
+
+
         [HttpGet, Route("Acciones")]
         public IActionResult GetAccion()
         {
@@ -93,86 +138,6 @@ namespace ConnectionApi.Controllers
 
                 return BadRequest(mensajeError.Mensaje);
             }
-        }
-
-        [HttpGet("DescargarImagen")]
-        public IActionResult DownloadFile()
-        {
-            try
-            {
-                var imagenDownload = _appContext.Imagenes.FirstOrDefault();
-                if (imagenDownload == null)
-                    throw new Exception("No se encontro imagen con ese ID");                
-                return new ObjectResult(imagenDownload);
-            }
-            catch(Exception ex)
-            {
-                MensajeError mensajeError = new MensajeError();
-                if (ex is MensajeError error)
-                {
-                    mensajeError.Mensaje = error.Mensaje;
-                }
-                else
-                {
-                    mensajeError.Mensaje = "Error inesperado";
-                }
-
-                return BadRequest(mensajeError.Mensaje);
-            }
-            
-        }
-
-          [HttpPost, Route("CargarRegistro")]
-        public IActionResult CargarRegistro(IFormFile fileup, int IdUser)
-        {
-            try
-            {
-                CircutorBL circutorBL = new CircutorBL(_env, _appContext);
-                var respuesta = circutorBL.CargarRegistro(fileup, IdUser);
-                return new ObjectResult(respuesta);
-            }
-            catch (Exception ex)
-            {
-                MensajeError mensajeError = new MensajeError();
-                if (ex is MensajeError error)
-                {
-                    mensajeError.Mensaje = error.Mensaje;
-                }
-                else
-                {
-                    mensajeError.Mensaje = "Error inesperado";
-                }
-
-                return BadRequest(mensajeError.Mensaje);
-            }      
-
-        }
-
-        [HttpGet("DescargarRegistro")]
-        public IActionResult DownloadRegistro(int IdUser)
-        {
-            try
-            {
-                var imagenDownload = _appContext.Registro.Where(x => x.idUser == IdUser).FirstOrDefault();
-                if (imagenDownload == null)
-                    throw new Exception("No se encontro imagen con ese ID");               
-                return new ObjectResult(imagenDownload);
-            }
-            catch (Exception ex)
-            {
-                MensajeError mensajeError = new MensajeError();
-                if (ex is MensajeError error)
-                {
-                    mensajeError.Mensaje = error.Mensaje;
-                }
-                else
-                {
-                    mensajeError.Mensaje = "Error inesperado";
-                }
-
-                return BadRequest(mensajeError.Mensaje);
-            }
-
-        }
+        }        
     }
 }

@@ -19,35 +19,63 @@ namespace ConnectionApi.Business
             _env = env;
             _appContext = appContext;
         }
-        public RespuestaCargueArchivo UploadImagen(IFormFile fileup)
+        public RespuestaCargueArchivo UploadImagen(IFormFile fileup, string modo)
         {
             var respuesta = new RespuestaCargueArchivo();                      
 
             if (fileup == null)
                 throw new Exception("No hay imagen para cargar");
             
-            var nuevaImagen = new Imagenes();
+            
             using (var ms = new MemoryStream())
             {
                 fileup.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 string s = Convert.ToBase64String(fileBytes);
-                nuevaImagen.idImagen = 1;
-                nuevaImagen.DataImagen = s;
-                nuevaImagen.NameImagen = fileup.FileName;
-                nuevaImagen.MimeType = "image/bmp";
-                var fileDb = _appContext.Imagenes.Count();
-                if(fileDb == 0)
-                {
-                    var imagenes = _appContext.Imagenes.Add(nuevaImagen);
-                    _appContext.SaveChanges();
+
+                switch(modo){
+                    case "NOM":
+                        var nuevaImagen = new Imagenes();
+                        nuevaImagen.idImagen = 1;
+                        nuevaImagen.DataImagen = s;
+                        nuevaImagen.NameImagen = fileup.FileName;
+                        nuevaImagen.MimeType = "image/bmp";
+                        var fileDb = _appContext.Imagenes.Count();
+                        if (fileDb == 0)
+                        {
+                            var imagenes = _appContext.Imagenes.Add(nuevaImagen);
+                            _appContext.SaveChanges();
+                        }
+                        else
+                        {
+                            var imgUpdate = _appContext.Imagenes.FirstOrDefault();
+                            imgUpdate.DataImagen = nuevaImagen.DataImagen;
+                            _appContext.SaveChanges();
+                        }
+                        break;
+                    case "BLQ":
+                        var nuevoRegistro = new Registro();
+                        nuevoRegistro.Imagen = s;
+                        nuevoRegistro.NameImagen = fileup.FileName;
+                        nuevoRegistro.MimeType = "image/bmp";
+                        nuevoRegistro.Fecha = DateTime.Now;
+                        nuevoRegistro.NombrePrueba = "BloqRotor";
+                        var fileRDb = _appContext.Registro.Count();
+                        if (fileRDb == 0)
+                        {
+                            var imagenes = _appContext.Registro.Add(nuevoRegistro);
+                            _appContext.SaveChanges();
+                        }
+                        else
+                        {
+                            var regUpdate = _appContext.Registro.FirstOrDefault();
+                            regUpdate.Imagen = nuevoRegistro.Imagen;
+                            _appContext.SaveChanges();
+                        }
+                        break ;
                 }
-                else
-                {
-                    var imgUpdate = _appContext.Imagenes.FirstOrDefault();
-                    imgUpdate.DataImagen = nuevaImagen.DataImagen;
-                    _appContext.SaveChanges();
-                }
+
+                
 
                 respuesta.EstadoArchivo = "Ok";
                 respuesta.NombreArchivo = fileup.FileName;
@@ -145,24 +173,7 @@ namespace ConnectionApi.Business
                 fileup.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 string s = Convert.ToBase64String(fileBytes);
-                nuevaImagen.Imagen = s;
-                nuevaImagen.NameImagen = fileup.FileName;
-                nuevaImagen.MimeType = "image/bmp";
-                nuevaImagen.Fecha = DateTime.Now;
-                nuevaImagen.idUser = IdUser;
-                nuevaImagen.NombrePrueba = "BloqRotor";
-                var fileDb = _appContext.Registro.Count();
-                if (fileDb == 0)
-                {
-                    var imagenes = _appContext.Registro.Add(nuevaImagen);
-                    _appContext.SaveChanges();
-                }
-                else
-                {
-                    var imgUpdate = _appContext.Registro.FirstOrDefault();
-                    imgUpdate.Imagen = nuevaImagen.Imagen;
-                    _appContext.SaveChanges();
-                }
+                
 
                 respuesta.EstadoArchivo = "Ok";
                 respuesta.NombreArchivo = fileup.FileName;
