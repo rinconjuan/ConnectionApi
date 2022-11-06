@@ -69,5 +69,30 @@ namespace ConnectionApi.Controllers
                 return BadRequest(mensajeError.Mensaje);
             }
         }
+
+        [HttpPost, Route("AddUser")]
+        public IActionResult AddUser(DatosUsuario usuario)
+        {
+            try
+            {
+                WebAppBL webAppBL = new WebAppBL(_env, _appContext);
+                var respuesta = webAppBL.Adduser(usuario);
+                return new ObjectResult(respuesta);
+            }
+            catch (Exception ex)
+            {
+                MensajeError mensajeError = new MensajeError();
+                if (ex is MensajeError error)
+                {
+                    mensajeError.Mensaje = error.Mensaje;
+                }
+                else
+                {
+                    mensajeError.Mensaje = "Error inesperado";
+                }
+
+                return BadRequest(mensajeError.Mensaje);
+            }
+        }
     }
 }
