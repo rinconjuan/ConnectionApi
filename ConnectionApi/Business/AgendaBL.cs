@@ -24,41 +24,29 @@ namespace ConnectionApi.Business
         internal object CreateAgenda(Agenda agenda)
         {
             if(agenda.FechaFin < agenda.FechaInicio)
-                throw new Exception("La fecha fin no puede ser menor a la fecha inicio");
+                throw new MensajeError("La fecha fin no puede ser menor a la fecha inicio");
 
 
             RespuestaCrearAgenda respuesta = new RespuestaCrearAgenda();
-            DatosAgenda consultaAgenda = new DatosAgenda()
-            {
-                FechaFin = agenda.FechaFin,
-                FechaInicio = agenda.FechaFin,
-                IdUser = agenda.IdUser,
-                Modo = "INS"
-            };
+            Agenda newAgenda = new Agenda();
+            newAgenda.Estado = agenda.Estado;
+            newAgenda.IdUser = agenda.IdUser;
+            newAgenda.FechaFin = agenda.FechaFin;
+            newAgenda.FechaInicio = agenda.FechaInicio;
+            
+                
+            var nuevoBooking = _appContext.Agenda.Add(newAgenda);
+            _appContext.SaveChanges();
+            respuesta.Creado = true;
+            respuesta.idUser = agenda.IdUser;
+            respuesta.Mensaje = "Agendamiento creado con exito.";                
 
-            //try
-            //{
-                
-                    var nuevoBooking = _appContext.Agenda.Add(agenda);
-                    _appContext.SaveChanges();
-                    respuesta.Creado = true;
-                    respuesta.idUser = agenda.IdUser;
-                    respuesta.Mensaje = "Agendamiento creado con exito.";
-                
-            //}
-            //catch(Exception ex)
-            //{
-            //    //respuesta.Creado = false;
-            //    //respuesta.idUser = agenda.IdUser;
-            //    //respuesta.Mensaje = ex.Message;
-                
-            //}
                    
             return respuesta;
             
         }
 
-        internal RespuestaAgenda GetAgenda([FromUri] DatosAgenda agenda)
+        internal RespuestaAgenda GetAgenda(DatosAgenda agenda)
         {
 
             RespuestaAgenda respuesta = new RespuestaAgenda();
@@ -69,6 +57,8 @@ namespace ConnectionApi.Business
                     var agendaDBIns = _appContext.Agenda.Where(x => x.FechaInicio < agenda.FechaFin & x.FechaFin > agenda.FechaInicio).FirstOrDefault();
                     if(agendaDBIns != null)
                         throw new MensajeError("No se puede agendar para estar hora, el espacio no esta disponible, busque otro horario");
+                    if (agenda.FechaInicio.Value.DayOfWeek == DayOfWeek.Saturday | agenda.FechaInicio.Value.DayOfWeek == DayOfWeek.Sunday)
+                        throw new MensajeError("No se es posible agendar para un fin de semana");
                     respuesta.Disponibilidad = true;
                     respuesta.Acceso = true;
                     respuesta.IdUser = agenda.IdUser;
@@ -82,7 +72,7 @@ namespace ConnectionApi.Business
 
                     break;
                 case "LOG":
-                    var agendaDBLog = _appContext.Agenda.Where(x => x.FechaFin == agenda.FechaFin & x.FechaInicio == agenda.FechaInicio & x.IdUser == agenda.IdUser).FirstOrDefault();
+                    var agendaDBLog = _appContext.Agenda.Where(x => x.FechaInicio < agenda.FechaFin & x.FechaFin > agenda.FechaInicio & x.IdUser == agenda.IdUser).FirstOrDefault();
                     if (agendaDBLog == null)
                         throw new MensajeError("No puede ingresar en este momento, no esta agendado para esta hora");
                     respuesta.Disponibilidad = true;

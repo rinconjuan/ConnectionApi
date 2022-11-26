@@ -71,7 +71,7 @@ namespace ConnectionApi.Controllers
         }
 
         [HttpPost, Route("AddUser")]
-        public IActionResult AddUser(DatosUsuario usuario)
+        public IActionResult AddUser([FromBody]DatosUsuario usuario)
         {
             try
             {

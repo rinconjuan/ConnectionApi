@@ -160,26 +160,6 @@ namespace ConnectionApi.Business
             return respuesta;
         }
 
-        internal object CargarRegistro(IFormFile fileup, int IdUser)
-        {
-            var respuesta = new RespuestaCargueArchivo();
-
-            if (fileup == null)
-                throw new Exception("No hay imagen para cargar");
-
-            var nuevaImagen = new Registro();
-            using (var ms = new MemoryStream())
-            {
-                fileup.CopyTo(ms);
-                var fileBytes = ms.ToArray();
-                string s = Convert.ToBase64String(fileBytes);
-                
-
-                respuesta.EstadoArchivo = "Ok";
-                respuesta.NombreArchivo = fileup.FileName;
-
-                return respuesta;
-            }
-        }
+        
     }
 }

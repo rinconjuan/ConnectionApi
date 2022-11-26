@@ -49,7 +49,7 @@ namespace ConnectionApi.Controllers
 
 
         [HttpGet, Route("GetAgenda")]
-        public IActionResult GetAgenda(DatosAgenda agenda)
+        public IActionResult GetAgenda([System.Web.Http.FromUri] DatosAgenda agenda)
         {
             try
             {               
