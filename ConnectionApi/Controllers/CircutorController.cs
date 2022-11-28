@@ -21,7 +21,7 @@ namespace ConnectionApi.Controllers
         }           
         
         [HttpPost, Route("CargarImagen")]
-        public IActionResult UploadFile(IFormFile fileup, string modo)
+        public IActionResult UploadFile(IFormFile fileup, [System.Web.Http.FromUri] string modo)
         {
             try
             {
