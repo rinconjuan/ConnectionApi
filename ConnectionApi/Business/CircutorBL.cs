@@ -36,7 +36,6 @@ namespace ConnectionApi.Business
                 switch(modo){
                     case "NOM":
                         var nuevaImagen = new Imagenes();
-                        nuevaImagen.idImagen = 1;
                         nuevaImagen.DataImagen = s;
                         nuevaImagen.NameImagen = fileup.FileName;
                         nuevaImagen.MimeType = "image/bmp";
