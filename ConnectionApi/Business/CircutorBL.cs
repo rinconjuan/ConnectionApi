@@ -24,7 +24,7 @@ namespace ConnectionApi.Business
             var respuesta = new RespuestaCargueArchivo();                      
 
             if (fileup == null)
-                throw new Exception("No hay imagen para cargar");
+                throw new MensajeError("No hay imagen para cargar");
             
             
             using (var ms = new MemoryStream())
