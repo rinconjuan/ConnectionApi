@@ -90,7 +90,7 @@ namespace ConnectionApi.Business
             RespuestaAccion respuesta = new RespuestaAccion();
             var countAcciones = _appContext.Acciones.Count();
             if(countAcciones == 0 )
-                throw new Exception("No hay acciones");
+                throw new MensajeError("No hay acciones");
 
             var accionDb = _appContext.Acciones.FirstOrDefault();
             respuesta.Accion = accionDb.Accion;
